@@ -1,0 +1,130 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0b205824-ec65-4728-a035-ad465f5d7821",
+              "name": "content",
+              "value": "=Content with emails adam@adam.com and my friends email kate@kate.com ",
+              "type": "string"
+            },
+            {
+              "id": "692047aa-abed-454b-95d0-d11ef4bfdeae",
+              "name": "receiverEmail",
+              "value": "=agnes@agnes.com ",
+              "type": "string"
+            },
+            {
+              "id": "d89760e3-9326-4714-a05a-8e97677aac2e",
+              "name": "senderEmail",
+              "value": "pete@pete.com",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -32,
+        48
+      ],
+      "id": "64c28287-4ba4-4e57-90d0-62d180bd91a1",
+      "name": "Set Fields",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "operation": "sanitize",
+        "text": "={{ JSON.stringify($('Set Fields').all()) }}",
+        "guardrails": {
+          "pii": {
+            "value": {
+              "type": "all"
+            }
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.guardrails",
+      "typeVersion": 1,
+      "position": [
+        192,
+        48
+      ],
+      "id": "619d36b1-3b34-4760-831b-d6b4bb06bc18",
+      "name": "Check for PII"
+    },
+    {
+      "parameters": {
+        "jsCode": "const parsedObject = JSON.parse($input.first().json.guardrailsInput)\n\nreturn parsedObject"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        48
+      ],
+      "id": "23ec4b56-7b77-426e-b77a-b1206d0fb5fb",
+      "name": "Parse"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -256,
+        48
+      ],
+      "id": "d04278fc-cb75-4c26-a3bf-5aba3bc16828",
+      "name": "When clicking ‘Execute workflow’"
+    }
+  ],
+  "connections": {
+    "Set Fields": {
+      "main": [
+        [
+          {
+            "node": "Check for PII",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check for PII": {
+      "main": [
+        [
+          {
+            "node": "Parse",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse": {
+      "main": [
+        []
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Set Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2295c029f4cb86c8f849f9c87dade323734dc279619eb9e2704f8473c381e4d1"
+  }
+}
