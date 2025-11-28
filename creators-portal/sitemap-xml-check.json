@@ -242,12 +242,15 @@
       ],
       "id": "990ca337-9567-4f6f-ab49-12338153328c",
       "name": "Append URL & HTTP Status",
+      "retryOnFail": true,
+      "waitBetweenTries": 3000,
       "credentials": {
         "googleSheetsOAuth2Api": {
           "id": "sgj6aGeryqEVmS3h",
           "name": "GSheets - piotr-sikora.com"
         }
-      }
+      },
+      "onError": "continueErrorOutput"
     },
     {
       "parameters": {
@@ -410,6 +413,21 @@
     },
     {
       "parameters": {
+        "content": "## Write Error to Google Sheet\nAppends each Error URL\n ",
+        "height": 368,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1920,
+        560
+      ],
+      "typeVersion": 1,
+      "id": "34d8136b-09b6-4982-ae3f-10d6d75d1cb5",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
         "operation": "append",
         "documentId": {
           "__rl": true,
@@ -464,28 +482,29 @@
         720
       ],
       "id": "a0273d0e-a11b-4da2-ac24-b7aadb2b4c43",
-      "name": "Append URL & HTTP Status1",
+      "name": "Append Error",
+      "retryOnFail": true,
+      "waitBetweenTries": 3000,
       "credentials": {
         "googleSheetsOAuth2Api": {
           "id": "sgj6aGeryqEVmS3h",
           "name": "GSheets - piotr-sikora.com"
         }
-      }
+      },
+      "onError": "continueErrorOutput"
     },
     {
       "parameters": {
-        "content": "## Write Error to Google Sheet\nAppends each Error URL\n ",
-        "height": 368,
-        "color": 4
+        "errorMessage": "Error while saving to Google Sheets"
       },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        1920,
-        560
-      ],
+      "type": "n8n-nodes-base.stopAndError",
       "typeVersion": 1,
-      "id": "34d8136b-09b6-4982-ae3f-10d6d75d1cb5",
-      "name": "Sticky Note10"
+      "position": [
+        2336,
+        384
+      ],
+      "id": "b8651719-d7b5-4250-8259-2105c388e15d",
+      "name": "Stop and Error"
     }
   ],
   "connections": {
@@ -569,7 +588,7 @@
         ],
         [
           {
-            "node": "Append URL & HTTP Status1",
+            "node": "Append Error",
             "type": "main",
             "index": 0
           }
@@ -581,6 +600,13 @@
         [
           {
             "node": "Loop Over URL's",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Stop and Error",
             "type": "main",
             "index": 0
           }
@@ -605,11 +631,18 @@
         ]
       ]
     },
-    "Append URL & HTTP Status1": {
+    "Append Error": {
       "main": [
         [
           {
             "node": "Loop Over URL's",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Stop and Error",
             "type": "main",
             "index": 0
           }
