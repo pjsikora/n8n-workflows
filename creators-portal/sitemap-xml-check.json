@@ -36,6 +36,8 @@
       ],
       "id": "400b6656-9387-44d4-ad3f-10acdc90dc2b",
       "name": "Get sitemap.xml",
+      "retryOnFail": true,
+      "waitBetweenTries": 3000,
       "onError": "continueErrorOutput"
     },
     {
