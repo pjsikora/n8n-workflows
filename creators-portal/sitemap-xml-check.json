@@ -114,41 +114,8 @@
     },
     {
       "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "ef41777f-6cc2-4262-a23b-3e985269e533",
-              "leftValue": "={{ $json.URL }}",
-              "rightValue": "=/(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})/gi",
-              "operator": {
-                "type": "string",
-                "operation": "regex"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        32,
-        96
-      ],
-      "id": "13436992-6902-4b2c-9d8b-3f00a0c4723a",
-      "name": "If"
-    },
-    {
-      "parameters": {
         "content": "## Iterate Through All Sitemapped Links\nLoops through each extracted URL from the sitemap and performs an HTTP status check for every page.",
-        "height": 560,
+        "height": 1024,
         "width": 832,
         "color": 7
       },
@@ -199,8 +166,7 @@
         "options": {
           "response": {
             "response": {
-              "fullResponse": true,
-              "neverError": true
+              "fullResponse": true
             }
           }
         }
@@ -212,7 +178,10 @@
         256
       ],
       "id": "09cb0ab5-1e0a-4b45-a20f-5dc269388293",
-      "name": "HTTP GET URL from sitemap.xml"
+      "name": "HTTP GET URL from sitemap.xml",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "onError": "continueErrorOutput"
     },
     {
       "parameters": {
@@ -403,6 +372,118 @@
       "typeVersion": 1,
       "id": "be0289d0-7e92-4c31-b6bf-7e855351b724",
       "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ef41777f-6cc2-4262-a23b-3e985269e533",
+              "leftValue": "={{ $json.URL }}",
+              "rightValue": "=/(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})/gi",
+              "operator": {
+                "type": "string",
+                "operation": "regex"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        32,
+        96
+      ],
+      "id": "13436992-6902-4b2c-9d8b-3f00a0c4723a",
+      "name": "If valid URL"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1dRKuAWEpoYqFRKgk8djMcmX44zrRYlYvdOw_rQW9BvI",
+          "mode": "list",
+          "cachedResultName": "[Sitemap.xml - Check pages statuses]",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dRKuAWEpoYqFRKgk8djMcmX44zrRYlYvdOw_rQW9BvI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 686915216,
+          "mode": "list",
+          "cachedResultName": "Errors",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dRKuAWEpoYqFRKgk8djMcmX44zrRYlYvdOw_rQW9BvI/edit#gid=686915216"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "URL": "={{ $('Loop Over URL\\'s').item.json.loc }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2000,
+        720
+      ],
+      "id": "a0273d0e-a11b-4da2-ac24-b7aadb2b4c43",
+      "name": "Append URL & HTTP Status1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "sgj6aGeryqEVmS3h",
+          "name": "GSheets - piotr-sikora.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Write Error to Google Sheet\nAppends each Error URL\n ",
+        "height": 368,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1920,
+        560
+      ],
+      "typeVersion": 1,
+      "id": "34d8136b-09b6-4982-ae3f-10d6d75d1cb5",
+      "name": "Sticky Note10"
     }
   ],
   "connections": {
@@ -410,7 +491,7 @@
       "main": [
         [
           {
-            "node": "If",
+            "node": "If valid URL",
             "type": "main",
             "index": 0
           }
@@ -475,7 +556,36 @@
         ]
       ]
     },
-    "If": {
+    "HTTP GET URL from sitemap.xml": {
+      "main": [
+        [
+          {
+            "node": "Append URL & HTTP Status",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append URL & HTTP Status1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append URL & HTTP Status": {
+      "main": [
+        [
+          {
+            "node": "Loop Over URL's",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If valid URL": {
       "main": [
         [
           {
@@ -493,18 +603,7 @@
         ]
       ]
     },
-    "HTTP GET URL from sitemap.xml": {
-      "main": [
-        [
-          {
-            "node": "Append URL & HTTP Status",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Append URL & HTTP Status": {
+    "Append URL & HTTP Status1": {
       "main": [
         [
           {
