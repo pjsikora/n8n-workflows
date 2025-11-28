@@ -244,6 +244,7 @@
       "name": "Append URL & HTTP Status",
       "retryOnFail": true,
       "waitBetweenTries": 3000,
+      "executeOnce": true,
       "credentials": {
         "googleSheetsOAuth2Api": {
           "id": "sgj6aGeryqEVmS3h",
@@ -485,6 +486,7 @@
       "name": "Append Error",
       "retryOnFail": true,
       "waitBetweenTries": 3000,
+      "executeOnce": true,
       "credentials": {
         "googleSheetsOAuth2Api": {
           "id": "sgj6aGeryqEVmS3h",
