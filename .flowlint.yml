@@ -1,0 +1,30 @@
+version: 1
+files:
+  include:
+    - "**/*.n8n.json"
+    - "**/workflows/**/*.json"
+  ignore:
+    - "samples/**"
+    - "**/*.spec.json"
+
+report:
+  annotations: true
+  summary_limit: 25
+
+rules:
+  rate_limit_retry:
+    enabled: true
+    max_concurrency: 5
+  error_handling:
+    enabled: true
+    forbid_continue_on_fail: true
+  secrets:
+    enabled: true
+  idempotency:
+    enabled: true
+  dead_ends:
+    enabled: true
+  long_running:
+    enabled: true
+    max_iterations: 1000
+    timeout_ms: 300000
