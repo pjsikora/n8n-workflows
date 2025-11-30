@@ -6,7 +6,6 @@ files:
   ignore:
     - "samples/**"
     - "**/*.spec.json"
-    - "node_modules/**"
 
 report:
   annotations: true
