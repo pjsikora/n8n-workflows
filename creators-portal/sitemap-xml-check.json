@@ -69,13 +69,15 @@
     },
     {
       "parameters": {
-        "options": {}
+        "options": {
+          "reset": false
+        }
       },
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        1520,
-        64
+        1488,
+        80
       ],
       "id": "311c65a3-fd2f-4ecd-8390-bb874c835385",
       "name": "Loop Over URL's"
@@ -176,8 +178,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        1744,
-        256
+        1728,
+        272
       ],
       "id": "09cb0ab5-1e0a-4b45-a20f-5dc269388293",
       "name": "HTTP GET URL from sitemap.xml",
@@ -237,14 +239,15 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        2000,
+        1968,
         256
       ],
       "id": "990ca337-9567-4f6f-ab49-12338153328c",
       "name": "Append URL & HTTP Status",
       "retryOnFail": true,
       "waitBetweenTries": 3000,
-      "executeOnce": true,
+      "executeOnce": false,
+      "notesInFlow": false,
       "credentials": {
         "googleSheetsOAuth2Api": {
           "id": "sgj6aGeryqEVmS3h",
@@ -279,8 +282,8 @@
       "type": "n8n-nodes-base.form",
       "typeVersion": 2.3,
       "position": [
-        1728,
-        -272
+        1760,
+        -256
       ],
       "id": "d56f89c0-54ff-415d-8cd9-db43db7b13c1",
       "name": "Process ended",
@@ -381,39 +384,6 @@
     },
     {
       "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "ef41777f-6cc2-4262-a23b-3e985269e533",
-              "leftValue": "={{ $json.URL }}",
-              "rightValue": "=/(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})/gi",
-              "operator": {
-                "type": "string",
-                "operation": "regex"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        32,
-        96
-      ],
-      "id": "13436992-6902-4b2c-9d8b-3f00a0c4723a",
-      "name": "If valid URL"
-    },
-    {
-      "parameters": {
         "content": "## Write Error to Google Sheet\nAppends each Error URL\n ",
         "height": 368,
         "color": 4
@@ -479,14 +449,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        2000,
+        1984,
         720
       ],
       "id": "a0273d0e-a11b-4da2-ac24-b7aadb2b4c43",
       "name": "Append Error",
       "retryOnFail": true,
       "waitBetweenTries": 3000,
-      "executeOnce": true,
+      "executeOnce": false,
       "credentials": {
         "googleSheetsOAuth2Api": {
           "id": "sgj6aGeryqEVmS3h",
@@ -502,11 +472,44 @@
       "type": "n8n-nodes-base.stopAndError",
       "typeVersion": 1,
       "position": [
-        2336,
+        2544,
         384
       ],
       "id": "b8651719-d7b5-4250-8259-2105c388e15d",
       "name": "Stop and Error"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ef41777f-6cc2-4262-a23b-3e985269e533",
+              "leftValue": "={{ $json.URL }}",
+              "rightValue": "=/(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})/gi",
+              "operator": {
+                "type": "string",
+                "operation": "regex"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        32,
+        96
+      ],
+      "id": "13436992-6902-4b2c-9d8b-3f00a0c4723a",
+      "name": "If"
     }
   ],
   "connections": {
@@ -514,7 +517,7 @@
       "main": [
         [
           {
-            "node": "If valid URL",
+            "node": "If",
             "type": "main",
             "index": 0
           }
@@ -615,24 +618,6 @@
         ]
       ]
     },
-    "If valid URL": {
-      "main": [
-        [
-          {
-            "node": "Get sitemap.xml",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Incorrect URL",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Append Error": {
       "main": [
         [
@@ -645,6 +630,24 @@
         [
           {
             "node": "Stop and Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get sitemap.xml",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Incorrect URL",
             "type": "main",
             "index": 0
           }
