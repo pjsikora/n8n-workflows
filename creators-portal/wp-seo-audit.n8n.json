@@ -41,7 +41,7 @@
         -128
       ],
       "id": "3a5f6f97-c79a-4fed-b32a-fe7695e569f1",
-      "name": "HTTP Request",
+      "name": "Get Posts",
       "executeOnce": false,
       "retryOnFail": true
     },
