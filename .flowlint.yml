@@ -5,7 +5,10 @@ files:
     - "**/workflows/**/*.json"
   ignore:
     - "samples/**"
+    - "creators-portal/**"
     - "**/*.spec.json"
+    - "guardrails-pass-an-object.json"
+    - "guardrails-testing.json"
 
 report:
   annotations: true
