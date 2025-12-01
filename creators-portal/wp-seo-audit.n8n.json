@@ -22,7 +22,7 @@
       "type": "n8n-nodes-base.formTrigger",
       "typeVersion": 2.3,
       "position": [
-        -1121,
+        -1120,
         -320
       ],
       "id": "bfc25242-766f-4b7d-ab23-a0829de1fe83",
@@ -42,7 +42,8 @@
       ],
       "id": "3a5f6f97-c79a-4fed-b32a-fe7695e569f1",
       "name": "Get Posts",
-      "onError": "continueErrorOutput"
+      "executeOnce": false,
+      "retryOnFail": true
     },
     {
       "parameters": {
@@ -353,13 +354,7 @@
             "index": 2
           }
         ],
-        [
-          {
-            "node": "WP API Error",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Get Categories": {
