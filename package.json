@@ -1,0 +1,26 @@
+{
+  "name": "n8n-workflows",
+  "version": "1.0.0",
+  "description": "n8n-workflows by piotr-sikora.com",
+  "main": "index.js",
+  "scripts": {
+    "test": "flowlint scan"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pjsikora/n8n-workflows.git"
+  },
+  "keywords": [
+    "n8n",
+    "flowlint"
+  ],
+  "author": "piotr-sikora.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pjsikora/n8n-workflows/issues"
+  },
+  "homepage": "https://github.com/pjsikora/n8n-workflows#readme",
+  "dependencies": {
+    "flowlint": "^0.1.3"
+  }
+}
